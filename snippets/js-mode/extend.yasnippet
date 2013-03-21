@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: extend
+# key: ex
+# --
+${1:subclass}.prototype=jQuery.extend({}, ${2:superclass}.prototype, {
+                                          ${3:method}: function(${4:args}) {
+                                                       $0
+                                          }
+});

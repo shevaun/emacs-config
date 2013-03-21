@@ -1,0 +1,1 @@
+Rails.logger.debug("FIXME #{<cursor>.inspect}") #FIXME
