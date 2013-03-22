@@ -285,7 +285,7 @@
 (global-set-key "\C-xv\r" 'my-vc-bzr-checkin)
 (global-set-key [f5] 'project-grep)
 (global-set-key [S-f5] 'project-find)
-(global-set-key [f10] 'next-error)
+(global-set-key [f10] 'next-match)
 (global-set-key [C-f10] 'compile)
 (global-set-key [S-f9] 'ruby-test:find-last)
 (global-set-key [C-f9] 'ruby-test:run-one)
