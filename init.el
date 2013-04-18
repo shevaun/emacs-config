@@ -17,10 +17,15 @@
 (put 'downcase-region 'disabled nil)
 (put 'scroll-left 'disabled nil)
 
+;; Colour Scheme
+
 (require 'color-theme)
 (color-theme-initialize)
-(load-file "~/.emacs.d/color-theme/color-theme-railscasts.el")
-(color-theme-railscasts)
+
+;; (load-file "~/.emacs.d/color-theme/color-theme-railscasts.el")
+;; (color-theme-railscasts)
+(load-file "~/.emacs.d/vendor/emacs-color-theme-solarized/color-theme-solarized.el")
+(color-theme-solarized-dark)
 
 (dolist (elm '("emacs-rails" "emacs-rails/rhtml" "yasnippet" "coffee-mode" "full-ack"))
   (add-to-list 'load-path (concat "~/.emacs.d/vendor/" elm)))
