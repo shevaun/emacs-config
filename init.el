@@ -283,7 +283,7 @@
 (global-set-key "\C-xvD" 'my-vc-bzr-dir)
 (global-set-key [S-M-return] 'my-vc-bzr-dir)
 (global-set-key "\C-xv\r" 'my-vc-bzr-checkin)
-(global-set-key [f5] 'project-grep)
+(global-set-key [f5] 'ack)
 (global-set-key [S-f5] 'project-find)
 (global-set-key [f10] 'next-match)
 (global-set-key [C-f10] 'compile)
