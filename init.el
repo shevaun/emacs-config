@@ -76,6 +76,7 @@
 (add-to-list 'auto-mode-alist '("\\.rsel$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Rakefile" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Guardfile" . ruby-mode))
 (add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
 
 ;; (defvar javascript-identifier-regexp "[a-zA-Z0-9.$_]+")
@@ -102,7 +103,7 @@
                            (save-excursion
                              (untabify (point-min) (point-max))
                              ;; (if (not (string-match "qsr\|assure\|tickit" buffer-file-name)) (delete-trailing-whitespace))
-                             (delete-trailing-whitespace)
+                             ;;(delete-trailing-whitespace)
                              )))
               (imenu-add-to-menubar "IMENU")
               (set (make-local-variable 'tab-width) 2)
@@ -113,8 +114,9 @@
             ;; (hs-minor-mode t)
             (local-set-key (kbd "\C-c\C-r") 'my-ruby:exec-buffer)))
 
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(add-hook 'js-mode-hook 
+(add-hook 'js-mode-hook
           (lambda()
             ;; (hs-minor-mode t)
             (local-set-key [(meta ?.)] 'find-tag)))
@@ -401,15 +403,15 @@
 
 (global-set-key (kbd "C-c +") 'increment-number-at-point)
 
-(defun save-macro (name)                  
+(defun save-macro (name)
     "save a macro. Take a name as argument
-     and save the last defined macro under 
+     and save the last defined macro under
      this name at the end of your .emacs"
-     (interactive "SName of the macro :")  ; ask for the name of the macro    
-     (kmacro-name-last-macro name)         ; use this name for the macro    
-     (find-file (user-init-file))                   ; open ~/.emacs or other user init file 
+     (interactive "SName of the macro :")  ; ask for the name of the macro
+     (kmacro-name-last-macro name)         ; use this name for the macro
+     (find-file (user-init-file))                   ; open ~/.emacs or other user init file
      (goto-char (point-max))               ; go to the end of the .emacs
      (newline)                             ; insert a newline
-     (insert-kbd-macro name)               ; copy the macro 
+     (insert-kbd-macro name)               ; copy the macro
      (newline)                             ; insert a newline
      (switch-to-buffer nil))               ; return to the initial buffer
