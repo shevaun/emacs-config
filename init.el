@@ -22,13 +22,16 @@
 (require 'color-theme)
 (color-theme-initialize)
 
-;; (load-file "~/.emacs.d/color-theme/color-theme-railscasts.el")
-;; (color-theme-railscasts)
-(load-file "~/.emacs.d/vendor/emacs-color-theme-solarized/color-theme-solarized.el")
-(color-theme-solarized-dark)
+(load-file "~/.emacs.d/color-theme/color-theme-railscasts.el")
+(color-theme-railscasts)
+;; (load-file "~/.emacs.d/vendor/emacs-color-theme-solarized/color-theme-solarized.el")
+;; (color-theme-solarized-dark)
 
-(dolist (elm '("emacs-rails" "emacs-rails/rhtml" "yasnippet" "coffee-mode" "full-ack"))
+(dolist (elm '("emacs-rails" "emacs-rails/rhtml" "yasnippet" "coffee-mode" "full-ack" "bogolisk-egg-d0b62d9" "slim-mode"))
   (add-to-list 'load-path (concat "~/.emacs.d/vendor/" elm)))
+
+(require 'egg)
+(require 'slim-mode)
 
 (autoload 'ack-same "full-ack" nil t)
 (autoload 'ack "full-ack" nil t)
@@ -76,7 +79,7 @@
 
 (add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.scss$" . sass-mode))
-(add-to-list 'auto-mode-alist '("\\.rpdf$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.prawn$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.rtex$" . latex-mode))
 (add-to-list 'auto-mode-alist '("\\.rsel$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Rakefile" . ruby-mode))

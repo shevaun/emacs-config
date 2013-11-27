@@ -27,32 +27,32 @@
      (font-lock-comment-face ((t (:foreground "#BC9458" :italic t))))
      (font-lock-constant-face ((t (:foreground "#6D9CBE"))))
      (font-lock-doc-string-face ((t (:foreground "#A5C261"))))
-     (font-lock-function-name-face ((t (:foreground "#FFC66D"))))
-     (font-lock-keyword-face ((t (:foreground "#CC7833"))))
+     (font-lock-function-name-face ((t (:foreground "#0087ff"))))
+     (font-lock-keyword-face ((t (:foreground "#5f8700"))))
      (font-lock-preprocessor-face ((t (:foreground "#CC7833"))))
      (font-lock-reference-face ((t (:foreground "LightSteelBlue"))))
      (font-lock-string-face ((t (:foreground "#A5C261"))))
-     (font-lock-type-face ((t (:foreground "white"))))
-     (font-lock-variable-name-face ((t (:foreground "LightSteelBlue"))))
+     (font-lock-type-face ((t (:foreground "LightSalmon"))))
+     (font-lock-variable-name-face ((t (:foreground "#00afaf"))))
      (font-lock-warning-face ((t (:foreground "Pink"))))
      (paren-face-match-light ((t (:foreground "#FFC66D" :background "#555577"))))
      (highlight ((t (:background "darkolivegreen"))))
      (italic ((t (:italic t))))
      (modeline ((t (:background "#A5BAF1" :foreground "black"))))
-     (modeline-buffer-id ((t (:background "#A5BAF1" :foreground 
+     (modeline-buffer-id ((t (:background "#A5BAF1" :foreground
                                           "black"))))
-     (modeline-mousable ((t (:background "#A5BAF1" :foreground 
+     (modeline-mousable ((t (:background "#A5BAF1" :foreground
                                          "black"))))
      (modeline-mousable-minor-mode ((t (:background
                                         "#A5BAF1" :foreground "black"))))
      (region ((t (:background "#555577"))))
      (primary-selection ((t (:background "#555577"))))
      (isearch ((t (:background "#555555"))))
-     (zmacs-region ((t (:background "#555577")))) 
-     (secondary-selection ((t (:background "darkslateblue")))) 
-     (flymake-errline ((t (:background "LightSalmon" :foreground 
-                                       "black")))) 
-     (flymake-warnline ((t (:background "LightSteelBlue" :foreground 
+     (zmacs-region ((t (:background "#555577"))))
+     (secondary-selection ((t (:background "darkslateblue"))))
+     (flymake-errline ((t (:background "LightSalmon" :foreground
+                                       "black"))))
+     (flymake-warnline ((t (:background "LightSteelBlue" :foreground
                                         "black"))))
-     (underline ((t (:underline t)))) 
+     (underline ((t (:underline t))))
      (minibuffer-prompt ((t (:bold t :foreground "#FF6600")))))))
