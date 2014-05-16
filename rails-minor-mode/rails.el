@@ -57,9 +57,9 @@
 
 ;;;;;;;;; Loading most of the mode
 
+(require 'rails-lib)
 (require 'rails-core)
 (require 'rails-ruby)
-(require 'rails-lib)
 
 (require 'rails-cmd-proxy)
 (require 'rails-navigation)
@@ -195,6 +195,7 @@ Emacs w3m browser."
 
 (defvar rails-adapters-alist
   '(("mysql"      . sql-mysql)
+    ("mysql2"     . sql-mysql)
     ("postgresql" . sql-postgres)
     ("sqlite3"    . sql-sqlite))
   "Sets emacs sql function for rails adapter names.")
@@ -204,13 +205,13 @@ Emacs w3m browser."
   :group 'rails
   :type '(repeat string))
 
-(defcustom rails-grep-extensions '("builder" "erb" "haml" "liquid" "mab" "rake" "rb" "rhtml" "rjs" "rxml" "yml" "feature" "js" "html" "rtex" "prawn" "coffee" "less" "scss")
+(defcustom rails-grep-extensions '("builder" "erb" "haml" "liquid" "mab" "rake" "rb" "rhtml" "rjs" "rxml" "yml" "feature" "js" "html" "rtex" "prawn" "coffee" "less" "scss" "rabl" "json_builder" "jbuilder" "slim")
   "List of file extensions which grep searches."
   :group 'rails
   :type '(repeat string))
 
 (defcustom rails-templates-list
-  '("html.erb" "erb" "js.rjs" "rjs" "xml.builder" "builder" "rhtml" "rxml" "html.haml" "haml" "html.liquid" "liquid" "html.mad" "mab" "pdf.rtex" "rtex" "pdf.prawn" "prawn")
+  '("html.erb" "erb" "js.rjs" "rjs" "xml.builder" "builder" "rhtml" "rxml" "html.haml" "haml" "html.liquid" "liquid" "html.mad" "mab" "pdf.rtex" "rtex" "pdf.prawn" "prawn" "rabl" "json_builder" "json.jbuilder" "html.slim" "slim")
   "List of view templates.  This first template is the default template."
   :group 'rails
   :type '(repeat string))
@@ -282,7 +283,6 @@ Emacs w3m browser."
         (setq buffer-read-only t)
         (goto-char (point-min))
         (local-set-key "q" 'quit-window)
-        (local-set-key [f1] 'rails-search-doc)
         (display-buffer (current-buffer)))))
 
 (defun rails-create-tags()
@@ -294,7 +294,7 @@ Emacs w3m browser."
      (shell-command
       (format rails-tags-command tags-file-name
         (strings-join " " (mapcar #'rails-core:file rails-tags-dirs))))
-     (flet ((yes-or-no-p (p) (if rails-ask-when-reload-tags
+     (cl-flet ((yes-or-no-p (p) (if rails-ask-when-reload-tags
          (y-or-n-p p)
              t)))
        (visit-tags-table tags-file-name)))))
@@ -363,7 +363,7 @@ Emacs w3m browser."
               (sql-user (rails-db-conf-username conf))
               (sql-password (rails-db-conf-password conf)))
           ;; Reload localy sql-get-login to avoid asking of confirmation of DB login parameters
-          (flet ((sql-get-login (&rest pars) () t))
+          (cl-flet ((sql-get-login (&rest pars) () t))
             (funcall (rails-database-emacs-func (rails-db-conf-adapter conf)))))))))
 
 (defun rails-has-api-root ()
@@ -485,7 +485,7 @@ necessary."
           (lambda ()
             (when (rails-project:root)
               (require 'rails-ruby)
-              (local-set-key (rails-key "f") '(lambda()
+              (local-set-key (rails-global-key "f") '(lambda()
                                                 (interactive)
                                                 (mouse-major-mode-menu (rails-core:menu-position))))
               (local-set-key (kbd "C-:") 'ruby-toggle-string<>simbol)

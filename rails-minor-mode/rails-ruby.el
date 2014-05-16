@@ -97,10 +97,10 @@ See the variable `align-rules-list' for more details.")
 
 (defun run-ruby-in-buffer (buf script &rest params)
   "Run CMD as a ruby process in BUF if BUF does not exist."
-  (message "run-ruby-in-buffer %s" params)
   (let ((abuf (concat "*" buf "*")))
     (when (not (comint-check-proc abuf))
-      (set-buffer (apply #'make-comint buf rails-ruby-command nil script params)))
+      (let ((cmdlist (append (rails-script:find-rails-command script) params)))
+        (set-buffer (apply #'make-comint buf (car cmdlist) nil (cdr cmdlist)))))
     (pop-to-buffer abuf)
     (when (fboundp 'inf-ruby-mode)
       (inf-ruby-mode)

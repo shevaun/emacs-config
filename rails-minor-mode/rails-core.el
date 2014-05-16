@@ -677,9 +677,9 @@ If the action is nil, return all views for the controller."
          (fns
           (list
            (lambda ()
-             (rails-core:grep-from-file (rails-core:file "Gemfile")
-                                        "^gem[[:space:]]+\\(['\"]\\)rails\\1,[[:space:]]+\\1\\(.*?\\)\\1"
-                                        "\\2"))
+             (rails-core:grep-from-file (rails-core:file "Gemfile.lock")
+                                        "^[[:space:]]+rails[[:space:]]+(\\([[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+\\))"
+                                        "\\1"))
            (lambda ()
              (rails-core:grep-from-file (rails-core:file "config/environment.rb")
                                         "^RAILS_GEM_VERSION[[:space:]]+=[[:space:]]\\(['\"]\\)\\(.*?\\)\\1"
@@ -865,5 +865,10 @@ the Rails minor mode log."
 (defun rails-core:spec-exist-p ()
   "Return non nil if spec directory is exist."
   (file-exists-p (rails-core:file "spec")))
+
+(defun rails-core:prepare-command (command)
+  (if (and rails-rake-use-bundler-when-possible (file-exists-p (rails-core:file "Gemfile")))
+      (concat "bundle exec " command)
+    command))
 
 (provide 'rails-core)

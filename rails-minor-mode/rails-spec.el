@@ -30,8 +30,8 @@
 (defun rails-spec:runner ()
   "Command, that run specs."
   (if (file-exists-p (rails-core:file "script/spec"))
-    (rails-core:file "script/spec")
-    "rspec"))
+      (rails-core:file "script/spec")
+    (rails-core:prepare-command "rspec")))
 
 (defvar rails-spec:last-run nil
   "Spec and arguments of last run.")

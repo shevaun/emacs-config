@@ -13,8 +13,8 @@
                                      :enable (and (not (eq (rails-core:buffer-type) :rspec-lib))
                                                   (rails-core:rspec-lib-exist-p (rails-core:current-lib))))))
       (define-keys map
-        ((rails-key "l")         'rails-lib-layout:switch-to-lib)
-        ((rails-key "r")         'rails-lib-layout:switch-to-unit-test)
+        ((rails-local-key "l")         'rails-lib-layout:switch-to-lib)
+        ((rails-local-key "r")         'rails-lib-layout:switch-to-unit-test)
         ([menu-bar rails-lib-layout] (cons name menu))))
     map))
 

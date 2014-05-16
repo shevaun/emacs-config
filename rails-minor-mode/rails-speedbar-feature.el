@@ -150,7 +150,7 @@
       root)))
 
 (defmacro rails-speedbar:in-root (&rest body)
-  `(flet ((rails-project:root () ,(rails-speedbar:root)))
+  `(cl-flet ((rails-project:root () ,(rails-speedbar:root)))
      ,@body))
 
 (defun rails-speedbar:get-focus ()
@@ -169,7 +169,6 @@
    '("Ruby On Rails"
      (speedbar-line-directory . rails-speedbar:line-directory)))
 
-  (define-key rails-minor-mode-map (kbd "<f11>") 'rails-speedbar:get-focus)
   (define-key-after
     (lookup-key rails-minor-mode-map [menu-bar rails])
     [speedbar] '("Toggle Speedbar" . rails-speedbar:get-focus)

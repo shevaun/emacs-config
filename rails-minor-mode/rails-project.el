@@ -53,7 +53,7 @@ rails-root exist.
  "
  `(let ((,root (rails-project:root)))
     (when ,root
-      (flet ((rails-project:root () ,root))
+      (cl-flet ((rails-project:root () ,root))
         ,@body))))
 
 (defmacro rails-project:in-root (&rest body)

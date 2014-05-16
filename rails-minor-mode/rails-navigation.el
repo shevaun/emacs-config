@@ -286,14 +286,14 @@ rails-goto-file-on-current-line is run.")
    (format "Stylesheet \"%s\" does not exist do you whant to create it? " name)
    (rails-core:stylesheet-name name)))
 
-(def-goto-line rails-line-->partial (("\\([ ]*render\\|replace_html\\|insert_html\\).*:partial[ ]*=>[ ]*[\"']\\([^\"']*\\)[\"']"
-                                      (name 2)))
+(def-goto-line rails-line-->partial (("\\([ ]*render\\|replace_html\\|insert_html\\).*:?partial\\([ ]*=>\\|:\\)[ ]*[\"']\\([^\"']*\\)[\"']"
+                                      (name 3)))
   (rails-core:find-or-ask-to-create
    (format "Partial \"%s\" does not exist do you whant to create it? " name)
    (rails-core:partial-name name)))
 
-(def-goto-line rails-line-->action (("\\([ ]*render\\|replace_html\\|insert_html\\).*:action[ ]*=>[ ]*[\"'\:]\\([^\"']*\\)"
-                                     (name 2)))
+(def-goto-line rails-line-->action (("\\([ ]*render\\|replace_html\\|insert_html\\).*:?action\\([ ]*=>\\|:\\)[ ]*[\"'\:]\\([^\"']*\\)"
+                                     (name 3)))
   (rails-core:find-or-ask-to-create
    (format "View \"%s\" does not exist do you whant to create it? " name)
    (rails-core:view-name name)))
@@ -310,8 +310,8 @@ rails-goto-file-on-current-line is run.")
    (format "JavaScript file \"%s\" does not exist do you whant to create it? " name)
    (rails-core:js-file name)))
 
-(def-goto-line rails-line-->association-model (("^[ \t]*\\(has_one\\|belongs_to\\|has_many\\|has_and_belongs_to_many\\)[ \t].*:class_name[ \t]*=>[ \t]*[\"']\\([^\"']*\\)[\"']"
-                                                (name 2)))
+(def-goto-line rails-line-->association-model (("^[ \t]*\\(has_one\\|belongs_to\\|has_many\\|has_and_belongs_to_many\\)[ \t].*:?class_name\\([ \t]*=>\\|:\\)[ \t]*[\"']\\([^\"']*\\)[\"']"
+                                                (name 3)))
   (rails-core:find-file (rails-core:model-file name)))
 
 (def-goto-line rails-line-->single-association-model (("^[ \t]*\\(has_one\\|belongs_to\\)[ \t]*:\\([a-z0-9_]*\\)" (name 2)))
@@ -333,10 +333,10 @@ rails-goto-file-on-current-line is run.")
   (when (loop for keyword in rails-line-to-controller/action-keywords
               when (string-match (format "^[ ]*%s " keyword) line) do (return t))
     (let (action controller)
-      (when (string-match ":action[ ]*=>[ ]*[\"']\\([^\"']*\\)[\"']" line)
-        (setf action (match-string 1 line)))
-      (when (string-match ":controller[ ]*=>[ ]*[\"']\\([^\"']*\\)[\"']" line)
-        (setf controller (match-string 1 line)))
+      (when (string-match ":?action\\([ ]*=>\\|:\\)[ ]*[\"']\\([^\"']*\\)[\"']" line)
+        (setf action (match-string 2 line)))
+      (when (string-match ":?controller\\([ ]*=>\\|:\\)[ ]*[\"']\\([^\"']*\\)[\"']" line)
+        (setf controller (match-string 2 line)))
       (rails-controller-layout:switch-to-action-in-controller
        (if controller controller
          (rails-core:current-controller))

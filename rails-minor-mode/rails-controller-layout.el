@@ -142,13 +142,13 @@ If the action is nil, return all views for the controller."
                                        rails-controller-layout:switch-to-unit-test
                                        :enable (rails-core:current-mailer))))
       (define-keys map
-        ((rails-key "g") 'rails-controller-layout:switch-to-migration)
-        ((rails-key "m") 'rails-controller-layout:switch-to-model)
-        ((rails-key "h") 'rails-controller-layout:switch-to-helper)
-        ((rails-key "f") 'rails-controller-layout:switch-to-functional-test)
-        ((rails-key "c") 'rails-controller-layout:switch-to-controller)
-        ((rails-key "u") 'rails-controller-layout:switch-to-unit-test)
-        ((rails-key "r") 'rails-controller-layout:switch-to-rspec-controller)
+        ((rails-local-key "g") 'rails-controller-layout:switch-to-migration)
+        ((rails-local-key "m") 'rails-controller-layout:switch-to-model)
+        ((rails-local-key "h") 'rails-controller-layout:switch-to-helper)
+        ((rails-local-key "f") 'rails-controller-layout:switch-to-functional-test)
+        ((rails-local-key "c") 'rails-controller-layout:switch-to-controller)
+        ((rails-local-key "u") 'rails-controller-layout:switch-to-unit-test)
+        ((rails-local-key "r") 'rails-controller-layout:switch-to-rspec-controller)
         ([menu-bar rails-controller-layout] (cons name menu))))
     map))
 

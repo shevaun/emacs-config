@@ -111,12 +111,12 @@ For example -c to remove files from svn.")
   (let ((current (current-buffer))
         (buf (get-buffer rails-script:buffer-name)))
     (if buf
-      (if (buffer-visible-p rails-script:buffer-name)
-          (delete-windows-on buf)
-        (progn
-          (pop-to-buffer rails-script:buffer-name t t)
-          (pop-to-buffer current t t)
-          (run-hooks 'rails-script:show-buffer-hook)))
+        (if (buffer-visible-p rails-script:buffer-name)
+            (delete-windows-on buf)
+          (progn
+            (pop-to-buffer rails-script:buffer-name t t)
+            (pop-to-buffer current t t)
+            (run-hooks 'rails-script:show-buffer-hook)))
       (message "No output window found. Try running a script or a rake task before."))))
 
 (defun rails-script:setup-output-buffer ()
@@ -146,7 +146,7 @@ For example -c to remove files from svn.")
   (interactive)
   (let ((proc (rails-script:running-p)))
     (if proc
-	(delete-process proc))))
+        (delete-process proc))))
 
 (defun rails-script:sentinel-proc (proc msg)
   (let* ((name rails-script:running-script-name)
@@ -190,21 +190,30 @@ BUFFER-MAJOR-MODE and process-sentinel SENTINEL."
          (set-process-coding-system proc 'utf-8-dos 'utf-8-dos)
          (set-process-sentinel proc 'rails-script:sentinel-proc)
          (set-process-filter proc 'ansi-color-insertion-filter)
-         (setq rails-script:running-script-name (concat command
-                                                        " "
-                                                        (strings-join " " parameters)))
-	 (setq rails-ui:mode-line-script-name (or mode-line-string
+         (setq rails-script:running-script-name
+               (strings-join " " (cons command parameters)))
+         (setq rails-ui:mode-line-script-name (or mode-line-string
                                                   command))
          (message "Starting %s." rails-script:running-script-name))))))
+
+(defun rails-script:find-rails-command (command)
+  "Find first of 'script/rails command', 'script/command' or 'rails command' as a list of program & args"
+  (cond ((file-exists-p (rails-core:file "script/rails"))
+         (list rails-ruby-command (rails-core:file "script/rails") command))
+        ((file-exists-p (rails-core:file (format "script/%s" command)))
+         (list rails-ruby-command (rails-core:file (format "script/%s" command))))
+        (t (list "rails" command))))
+
+(defun rails-script:run-rails-command (command &rest parameters)
+  (let ((cmdlist (append (rails-script:find-rails-command command) parameters)))
+    (rails-script:run (car cmdlist) (cdr cmdlist))))
 
 ;;;;;;;;;; Destroy stuff ;;;;;;;;;;
 
 (defun rails-script:run-destroy (what &rest parameters)
   "Run the destroy script using WHAT and PARAMETERS."
-  (rails-script:run rails-ruby-command
-                    (append (list (format "script/destroy %s"  what))
-                            parameters
-                            rails-script:destroy-params-list)))
+  (apply #'rails-script:run-rails-command "destroy" what
+         (append parameters rails-script:destroy-params-list)))
 
 (defun rails-script:destroy (what)
   "Run destroy WHAT"
@@ -245,10 +254,8 @@ BUFFER-MAJOR-MODE and process-sentinel SENTINEL."
 
 (defun rails-script:run-generate (what &rest parameters)
   "Run the generate script using WHAT and PARAMETERS."
-  (rails-script:run rails-ruby-command
-                    (append (list (format "script/generate %s" what))
-                            parameters
-                            rails-script:generate-params-list)))
+  (apply #'rails-script:run-rails-command "generate" what
+         (append parameters rails-script:generate-params-list)))
 
 (defun rails-script:generate (what)
   "Run generate WHAT"
@@ -308,7 +315,7 @@ BUFFER-MAJOR-MODE and process-sentinel SENTINEL."
   (interactive "FNew Rails project directory: ")
   (make-directory dir t)
   (let ((default-directory (concat (expand-file-name dir) "/")))
-    (flet ((rails-project:root () default-directory))
+    (cl-flet ((rails-project:root () default-directory))
       (rails-script:run "rails" (list "--skip" (rails-project:root))))))
 
 ;;;;;;;;;; Shells ;;;;;;;;;;
@@ -319,13 +326,7 @@ BUFFER-MAJOR-MODE and process-sentinel SENTINEL."
   (rails-project:with-root
    (root)
    (let ((buffer-name (format "rails-%s-%s" (rails-project:name) name)))
-     (if (file-exists-p (rails-core:file "script/rails"))
-       (apply #'run-ruby-in-buffer buffer-name
-              (rails-core:file "script/rails")
-              (cons script params))
-       (apply #'run-ruby-in-buffer buffer-name
-              (rails-core:file (format "script/%s" script))
-              params))
+     (apply #'run-ruby-in-buffer buffer-name script params)
      (setq ruby-buffer buffer-name))
    (rails-minor-mode t)))
 
@@ -336,11 +337,11 @@ BUFFER-MAJOR-MODE and process-sentinel SENTINEL."
                      (read-buffer "Environment: " rails-default-environment))))
   (let* ((environment (or environment rails-default-environment))
          (name (format "console at (%s)" environment))
-	 (buffer (get-buffer (format "*rails-%s-%s*" (rails-project:name) name))))
+         (buffer (get-buffer (format "*rails-%s-%s*" (rails-project:name) name))))
     (if buffer
-      (progn
-        (when (fboundp 'inf-ruby-mode) (setq inf-ruby-buffer buffer))
-        (switch-to-buffer-other-window buffer))
+        (progn
+          (when (fboundp 'inf-ruby-mode) (setq inf-ruby-buffer buffer))
+          (switch-to-buffer-other-window buffer))
       (rails-script:run-interactive name
                                     "console"
                                     environment))))
@@ -351,4 +352,3 @@ BUFFER-MAJOR-MODE and process-sentinel SENTINEL."
   (rails-script:run-interactive "breakpointer" "breakpointer"))
 
 (provide 'rails-scripts)
-
